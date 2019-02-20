@@ -5,7 +5,7 @@
     <permission
         android:name="com.optimize.performance.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.optimize.performance.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -45,6 +45,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".TestBlankActivity"/>
+
         <activity android:name=".memory.MemoryShakeActivity"/>
 
         <activity android:name=".memory.MemoryLeakActivity"/>
@@ -52,7 +54,6 @@
         <activity android:name=".ui.SolveOverDrawActivity"/>
 
         <service android:name="com.amap.api.location.APSService"></service>
-
 
         <service android:name="cn.jpush.android.service.PushService"
             android:process=":multiprocess"
@@ -66,6 +67,8 @@
             android:exported="true"
             />
 
+        <service android:name=".net.JobSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider

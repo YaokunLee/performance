@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.optimize.performance"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -43,7 +43,7 @@ dependencies {
 
     implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     implementation 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
-
+    implementation 'top.zibin:Luban:1.1.8'
 
     implementation 'com.facebook.fresco:fresco:1.11.0'
     implementation 'com.facebook.fresco:animated-gif:1.11.0'
@@ -83,7 +83,12 @@ dependencies {
     annotationProcessor 'com.zhangyue.we:x2c-apt:1.1.2'
     implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 
+    implementation 'com.tencent:mmkv:1.0.17'
 
+
+    compile ('com.aliyun.ams:alicloud-android-httpdns:1.1.7@aar') {
+        transitive true
+    }
     provided 'me.ele:lancet-base:1.0.4'
 
     implementation 'com.github.markzhai:blockcanary-android:1.5.0'

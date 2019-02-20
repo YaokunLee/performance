@@ -40,6 +40,7 @@ import com.taobao.android.dexposed.XC_MethodHook;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXSDKEngine;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mmkv.MMKV;
 import com.umeng.commonsdk.UMConfigure;
 
 import java.io.BufferedReader;
@@ -80,9 +81,20 @@ public class PerformanceApp extends Application {
         }
     };
 
+    private int mCrashTimes;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+
+        if(mCrashTimes > 3){
+            // 删除文件，恢复到重新安装的状态
+        }
+
+        if(mCrashTimes > 5){
+            // 清除热修信息
+        }
+
         LaunchTimer.startRecord();
         MultiDex.install(this);
         DexposedBridge.hookAllConstructors(Thread.class, new XC_MethodHook() {
@@ -98,6 +110,13 @@ public class PerformanceApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        MMKV.initialize(PerformanceApp.this);
+        MMKV.defaultMMKV().encode("times",100);
+
+        int times = MMKV.defaultMMKV().decodeInt("times");
+
+
         LaunchTimer.startRecord();
         mApplication = this;
 

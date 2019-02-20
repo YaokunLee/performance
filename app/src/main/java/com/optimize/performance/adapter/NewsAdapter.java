@@ -1,8 +1,8 @@
 package com.optimize.performance.adapter;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Debug;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +15,14 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.optimize.performance.R;
 import com.optimize.performance.bean.NewsItem;
-import com.optimize.performance.ui.SolveOverDrawActivity;
+import com.optimize.performance.net.ConfigManager;
 import com.optimize.performance.utils.LaunchTimer;
 import com.optimize.performance.utils.LogUtils;
+import com.optimize.performance.wakelock.WakeLockUtils;
 
 import java.util.List;
+
+import top.zibin.luban.Luban;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
@@ -68,15 +71,43 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
 
         NewsItem newsItem = mItems.get(position);
+
+        // 以下代码是为了演示字符串的拼接
+        String msgOld = newsItem.title + newsItem.targetId;// 原有方式
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(newsItem.title)
+                .append(newsItem.targetId);// 建议使用方式，不要小看这点优化
+        String msgNew = builder.toString();
+
         holder.textView.setText(newsItem.title);
         Uri uri = Uri.parse(newsItem.imgurl);
         holder.imageView.setImageURI(uri);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.imageView.getContext(), SolveOverDrawActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                holder.imageView.getContext().startActivity(intent);
+
+                // ConfigManager.sOpenClick模拟的是功能的开关
+                if(ConfigManager.sOpenClick){
+                    // 此处模拟的是WakeLock使用的兜底策略
+                    WakeLockUtils.acquire(holder.imageView.getContext());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            WakeLockUtils.release();
+                        }
+                    },200);
+                }
+                // 以下代码是为了演示Luban这个库对图片压缩对流量方面的影响
+//                Luban.with(holder.imageView.getContext())
+//                        .load(Environment.getExternalStorageDirectory()+"/Android/1.jpg")
+//                        .setTargetDir(Environment.getExternalStorageDirectory()+"/Android")
+//                        .launch();
+
+                // 以下代码是为了演示解决过度绘制问题，可以换成解决内存抖动等方面的代码
+//                Intent intent = new Intent(holder.imageView.getContext(), SolveOverDrawActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                holder.imageView.getContext().startActivity(intent);
             }
         });
     }

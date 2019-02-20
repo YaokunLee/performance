@@ -23,7 +23,7 @@ public class InitAMapTask extends Task {
         mLocationClient = new AMapLocationClient(mContext);
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         mLocationOption.setOnceLocation(true);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
