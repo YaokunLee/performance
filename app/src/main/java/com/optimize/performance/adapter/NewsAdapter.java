@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.optimize.performance.MainActivity;
 import com.optimize.performance.R;
 import com.optimize.performance.bean.NewsItem;
 import com.optimize.performance.net.ConfigManager;
@@ -86,18 +89,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long currentTime = System.currentTimeMillis();
+
+                long netStats = MainActivity.getNetStats(holder.imageView.getContext(),
+                        currentTime - DateUtils.DAY_IN_MILLIS, currentTime);
+                Log.i("lz", "netStats " + netStats);
 
                 // ConfigManager.sOpenClick模拟的是功能的开关
-                if(ConfigManager.sOpenClick){
-                    // 此处模拟的是WakeLock使用的兜底策略
-                    WakeLockUtils.acquire(holder.imageView.getContext());
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            WakeLockUtils.release();
-                        }
-                    },200);
-                }
+//                if(ConfigManager.sOpenClick){
+//                    // 此处模拟的是WakeLock使用的兜底策略
+//                    WakeLockUtils.acquire(holder.imageView.getContext());
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            WakeLockUtils.release();
+//                        }
+//                    },200);
+//                }
                 // 以下代码是为了演示Luban这个库对图片压缩对流量方面的影响
 //                Luban.with(holder.imageView.getContext())
 //                        .load(Environment.getExternalStorageDirectory()+"/Android/1.jpg")
