@@ -1,8 +1,6 @@
 package com.optimize.performance.adapter;
 
 import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +13,13 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.optimize.performance.MainActivity;
 import com.optimize.performance.R;
 import com.optimize.performance.bean.NewsItem;
-import com.optimize.performance.net.ConfigManager;
+import com.optimize.performance.net.NetUtils;
 import com.optimize.performance.utils.LaunchTimer;
 import com.optimize.performance.utils.LogUtils;
-import com.optimize.performance.wakelock.WakeLockUtils;
 
 import java.util.List;
-
-import top.zibin.luban.Luban;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
@@ -91,7 +85,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             public void onClick(View v) {
                 long currentTime = System.currentTimeMillis();
 
-                long netStats = MainActivity.getNetStats(holder.imageView.getContext(),
+                long netStats = NetUtils.getNetStats(holder.imageView.getContext(),
                         currentTime - DateUtils.DAY_IN_MILLIS, currentTime);
                 Log.i("lz", "netStats " + netStats);
 
