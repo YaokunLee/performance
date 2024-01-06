@@ -18,7 +18,7 @@ public class InitAMapTask extends Task {
     };
 
     @Override
-    public void run() {
+    public void run() throws Exception {
 
         mLocationClient = new AMapLocationClient(mContext);
         mLocationClient.setLocationListener(mLocationListener);

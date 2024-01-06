@@ -16,7 +16,7 @@ public interface ITask {
     @IntRange(from = Process.THREAD_PRIORITY_FOREGROUND, to = Process.THREAD_PRIORITY_LOWEST)
     int priority();
 
-    void run();
+    void run() throws Exception;
 
     /**
      * Task执行所在的线程池，可指定，一般默认
